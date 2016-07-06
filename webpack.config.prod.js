@@ -21,6 +21,7 @@ var loaders = [
 ]
 
 var plugins = [
+  new webpack.optimize.DedupePlugin(),
   new webpack.LoaderOptionsPlugin({
     minimize: true,
     debug: false
