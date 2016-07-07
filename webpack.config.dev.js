@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var { resolve } = require('path');
 var autoprefixer = require('autoprefixer');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var loaders = [
   {
@@ -31,7 +32,9 @@ var loaders = [
 ]
 
 var plugins = [
-
+  new HtmlWebpackPlugin({
+    template: './index.html'
+  })
 ]
 
 module.exports = () => {
