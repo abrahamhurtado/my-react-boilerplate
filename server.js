@@ -21,7 +21,7 @@ if (env === 'development') {
   const compiler = webpack(config);
 
   const devMiddleware = (require('webpack-dev-middleware')(compiler, {
-    noInfo: false,
+    noInfo: true,
     publicPath: config.output.publicPath,
     hot: true,
     stats: {
