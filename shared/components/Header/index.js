@@ -1,5 +1,5 @@
 import React from 'react';
-import { foo } from './module2';
+import { foo } from './messages';
 import styles from './index.css';
 
 export default class Header extends React.Component {

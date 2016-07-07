@@ -53,7 +53,7 @@ var plugins = [
 module.exports = () => {
   return {
     context: __dirname,
-    entry: './index',
+    entry: './client/main',
     devtool: 'hidden-source-map',
     output: {
       filename: 'bundle.js',

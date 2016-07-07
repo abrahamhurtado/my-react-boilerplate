@@ -47,7 +47,7 @@ module.exports = () => {
     entry: [
       'react-hot-loader/patch',
       'webpack-hot-middleware/client',
-      './index'
+      './client/main'
     ],
     devtool: 'cheap-module-eval-source-map',
     output: {
