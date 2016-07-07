@@ -1,5 +1,8 @@
+// eslint-disable no-console
 import express from 'express';
 import path from 'path';
+
+import chalk from 'chalk';
 
 // middlewares
 import compression from 'compression';
@@ -11,9 +14,9 @@ const app = express();
 
 const env = process.env.NODE_ENV || 'development';
 
-app.use(compression())
+app.use(compression());
 
-app.use('/static', express.static(__dirname + '/build'));
+app.use('/static', express.static(`${__dirname}/build`));
 
 if (env === 'development') {
   const webpack = require('webpack');
@@ -32,13 +35,13 @@ if (env === 'development') {
 
   app.use(devMiddleware);
 
-  app.use(require('webpack-hot-middleware')(compiler))
+  app.use(require('webpack-hot-middleware')(compiler));
 
-  app.use(reactRouter(true, path.join(compiler.outputPath, 'index.html'), compiler.outputFileSystem))
+  app.use(reactRouter(true, path.join(compiler.outputPath, 'index.html'), compiler.outputFileSystem));
 } else {
-  app.use(reactRouter(false, path.resolve('./build/index.html')))
+  app.use(reactRouter(false, path.resolve('./build/index.html')));
 }
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`El servidor escucha en el puerto ${process.env.PORT || 3000}`);
+  console.log(chalk.bold.green(`El servidor escucha en el puerto ${process.env.PORT || 3000}`));
 });

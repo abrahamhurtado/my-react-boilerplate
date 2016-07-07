@@ -5,13 +5,13 @@ import { match, RouterContext } from 'react-router';
 import routes from '../../shared/routes';
 
 export default (isDev, filename, webpackFileSystem) => (req, res) => {
-  match({routes, location: req.url}, (err, redirect, props) => {
+  match({ routes, location: req.url }, (err, redirect, props) => {
     if (err) {
       res.status(500).send(err.message);
     } else if (redirect) {
       res.redirect(redirect.pathname + redirect.search);
     } else if (props) {
-      const app = renderToString(<RouterContext {...props} />);
+      const app = renderToString(<RouterContext { ...props } />);
 
       try {
         if (isDev) {
@@ -20,11 +20,11 @@ export default (isDev, filename, webpackFileSystem) => (req, res) => {
           res.send(readFileSync(filename).toString().replace('{{APP}}', app));
         }
       } catch (e) {
-        res.send("An error has happened, maybe it is because the index.html has not been created.")
+        res.send('An error has happened, maybe it is because the index.html has not been created.');
       }
 
     } else {
       res.status(404).send('Not found');
     }
   });
-}
+};

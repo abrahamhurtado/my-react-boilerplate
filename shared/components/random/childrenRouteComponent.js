@@ -5,9 +5,9 @@ export default class Children extends React.Component {
   render () {
     return (
       <div>
-        <Link to="/">Go to home route</Link>
+        <Link to='/'>Go to home route</Link>
         <h2>I'm the children route children!</h2>
       </div>
-    )
+    );
   }
 }

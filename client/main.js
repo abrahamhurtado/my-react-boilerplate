@@ -5,7 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import routes from '../shared/routes';
 
 const location = document.location.pathname + document.location.search;
-var app = document.querySelector('#react-app');
+const app = document.querySelector('#react-app');
 
 match({ routes, location }, (err, redirect, props) => {
   render(
@@ -15,8 +15,8 @@ match({ routes, location }, (err, redirect, props) => {
         routes={ routes }
       />
     </AppContainer>
-  ,app);
-})
+  , app);
+});
 
 if (module.hot) {
   module.hot.accept('../shared/components/App', () => {
@@ -28,7 +28,7 @@ if (module.hot) {
             routes={ routes }
           />
         </AppContainer>
-      ,app);
-    })
-  })
+      , app);
+    });
+  });
 }

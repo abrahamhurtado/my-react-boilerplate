@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
-import Header from '../Header'
+import Header from '../Header';
 
 export default class App extends React.Component {
   render () {
@@ -9,6 +8,6 @@ export default class App extends React.Component {
         <Header />
         { this.props.children }
       </div>
-    )
+    );
   }
 }

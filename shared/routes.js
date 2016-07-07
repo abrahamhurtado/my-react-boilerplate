@@ -1,8 +1,7 @@
 import React from 'react';
-import { Route } from 'react-router';
 import App from './components/App';
-import Index from './components/random/indexRouteComponent'
-import Children from './components/random/childrenRouteComponent'
+import Index from './components/random/indexRouteComponent';
+import Children from './components/random/childrenRouteComponent';
 
 export default {
   path: '/',
