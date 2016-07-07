@@ -1,9 +1,19 @@
 import express from 'express';
 import path from 'path';
 
+// middlewares
+import compression from 'compression';
+
+// custom middlewares
+import reactRouter from './server/middleware/reactRouter';
+
 const app = express();
 
 const env = process.env.NODE_ENV || 'development';
+
+app.use(compression())
+
+app.use('/static', express.static(__dirname + '/build'));
 
 if (env === 'development') {
   const webpack = require('webpack');
@@ -24,25 +34,10 @@ if (env === 'development') {
 
   app.use(require('webpack-hot-middleware')(compiler))
 
-  app.use('*', function (req, res, next) {
-    var filename = path.join(compiler.outputPath,'index.html');
-    compiler.outputFileSystem.readFile(filename, function(err, result){
-      if (err) {
-        return next(err);
-      }
-      res.set('content-type','text/html');
-      res.send(result);
-      res.end();
-    });
-  });
-
+  app.use(reactRouter(true, path.join(compiler.outputPath, 'index.html'), compiler.outputFileSystem))
+} else {
+  app.use(reactRouter(false, path.resolve('./build/index.html')))
 }
-
-app.use('/static', express.static('./build'))
-
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('./build/index.html'))
-});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`El servidor escucha en el puerto ${process.env.PORT || 3000}`);
