@@ -1,2 +1,2 @@
-export var foo = "Me saludas a tugfa";
-export var bar = "Eh we te la kreiste we xd";
+export var foo = "This will appear in the bundle";
+export var bar = "This will not appear in the bundle";

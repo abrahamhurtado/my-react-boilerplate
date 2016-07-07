@@ -13,12 +13,16 @@ if (env === 'development') {
   const devMiddleware = (require('webpack-dev-middleware')(compiler, {
     noInfo: false,
     publicPath: config.output.publicPath,
+    hot: true,
     stats: {
       colors: true
-    }
+    },
+    historyApiFallback: true
   }));
 
   app.use(devMiddleware);
+
+  app.use(require('webpack-hot-middleware')(compiler))
 
   app.use('*', function (req, res, next) {
     var filename = path.join(compiler.outputPath,'index.html');

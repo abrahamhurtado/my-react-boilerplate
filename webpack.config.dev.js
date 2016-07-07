@@ -12,6 +12,9 @@ var loaders = [
       presets: [
         'es2015-webpack',
         'react'
+      ],
+      plugins: [
+        'react-hot-loader/babel'
       ]
     }
   }, {
@@ -32,15 +35,20 @@ var loaders = [
 ]
 
 var plugins = [
+  new webpack.HotModuleReplacementPlugin(),
   new HtmlWebpackPlugin({
     template: './index.html'
-  })
+  }),
 ]
 
 module.exports = () => {
   return {
     context: __dirname,
-    entry: './index',
+    entry: [
+      'react-hot-loader/patch',
+      'webpack-hot-middleware/client',
+      './index'
+    ],
     devtool: 'cheap-module-eval-source-map',
     output: {
       filename: 'bundle.js',
