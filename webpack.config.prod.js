@@ -3,12 +3,14 @@ var { resolve } = require('path');
 var autoprefixer = require('autoprefixer');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var AssetsPlugin = require('assets-webpack-plugin');
 
 var loaders = [
   {
     test: /\.(js|jsx)$/,
     exclude: /node_modules/,
     loader: 'babel',
+    babelrc: false,
     query: {
       presets: [
         'es2015-webpack',
@@ -22,7 +24,7 @@ var loaders = [
     test: /\.html$/,
     loader: 'html'
   }
-]
+];
 
 var plugins = [
   new HtmlWebpackPlugin({
@@ -47,26 +49,35 @@ var plugins = [
       'NODE_ENV': JSON.stringify('production')
     }
   }),
-  new ExtractTextPlugin('style.css', { allChunks: true })
-]
+  new ExtractTextPlugin('style.css', { allChunks: true }),
+    new AssetsPlugin({
+    filename: 'assets.json',
+    path: resolve(__dirname, 'server'),
+    prettyPrint: true,
+    update: true
+  })
+];
 
 module.exports = () => {
   return {
     context: __dirname,
-    entry: './client/main',
+    entry: {
+      app: './client/main',
+      vendor: [ 'react', 'react-dom', 'react-router', 'react-helmet' ]
+    },
     devtool: 'hidden-source-map',
     output: {
-      filename: 'bundle.js',
+      filename: '[name].js',
       path: resolve(__dirname, 'build'),
       publicPath: '/static/'
     },
     resolve: {
-      extensions: ['.js', '.jsx', '.css']
+      extensions: [ '', '.js', '.jsx', '.css' ]
     },
     module: {
-      loaders: loaders
+      loaders
     },
-    plugins: plugins,
-    postcss: [ autoprefixer({browsers: 'last 2 versions'}) ]
-  }
-}
+    plugins,
+    postcss: [ autoprefixer({ browsers: 'last 2 versions' }) ]
+  };
+};

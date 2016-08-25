@@ -2,19 +2,18 @@ var webpack = require('webpack');
 var { resolve } = require('path');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var AssetsPlugin = require('assets-webpack-plugin');
 
 var loaders = [
   {
     test: /\.(js|jsx)$/,
     exclude: /node_modules/,
     loader: 'babel',
+    babelrc: false,
     query: {
       presets: [
         'es2015-webpack',
         'react'
-      ],
-      plugins: [
-        'react-hot-loader/babel'
       ]
     }
   }, {
@@ -32,36 +31,40 @@ var loaders = [
       'postcss-loader'
     ]
   }
-]
+];
 
 var plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new HtmlWebpackPlugin({
     template: './index.html'
   }),
-]
+  new AssetsPlugin({
+    filename: 'assets.json',
+    path: resolve(__dirname, 'server'),
+    prettyPrint: true,
+    update: true
+  })
+];
 
 module.exports = () => {
   return {
     context: __dirname,
-    entry: [
-      'react-hot-loader/patch',
-      'webpack-hot-middleware/client',
-      './client/main'
-    ],
+    entry: {
+      app: './client/main'
+    },
     devtool: 'cheap-module-eval-source-map',
     output: {
-      filename: 'bundle.js',
+      filename: '[name].js',
       path: resolve(__dirname, 'build'),
       publicPath: '/static/'
     },
     resolve: {
-      extensions: ['.js', '.jsx', '.css']
+      extensions: [ '', '.js', '.jsx', '.css' ]
     },
     module: {
-      loaders: loaders
+      loaders
     },
-    plugins: plugins,
-    postcss: () => [ autoprefixer({browsers: 'last 2 versions'}) ]
-  }
-}
+    plugins,
+    postcss: () => [ autoprefixer({ browsers: 'last 2 versions' }) ]
+  };
+};

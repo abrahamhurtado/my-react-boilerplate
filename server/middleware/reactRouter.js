@@ -1,10 +1,10 @@
 import React from 'react';
-import { readFileSync } from 'fs';
+import Helmet from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '../../shared/routes';
 
-export default (isDev, filename, webpackFileSystem) => (req, res) => {
+export default () => (req, res) => {
   match({ routes, location: req.url }, (err, redirect, props) => {
     if (err) {
       res.status(500).send(err.message);
@@ -13,15 +13,13 @@ export default (isDev, filename, webpackFileSystem) => (req, res) => {
     } else if (props) {
       const app = renderToString(<RouterContext { ...props } />);
 
-      try {
-        if (isDev) {
-          res.send(webpackFileSystem.readFileSync(filename).toString().replace('{{APP}}', app));
-        } else {
-          res.send(readFileSync(filename).toString().replace('{{APP}}', app));
-        }
-      } catch (e) {
-        res.send('An error has happened, maybe it is because the index.html has not been created.');
-      }
+      const head = Helmet.rewind();
+
+      res.render('index', {
+        app,
+        title: head.title.toString(),
+        assets: require('../assets.json')
+      });
 
     } else {
       res.status(404).send('Not found');
