@@ -12,7 +12,7 @@ var loaders = [
     babelrc: false,
     query: {
       presets: [
-        'es2015-webpack',
+        [ 'es2015', { modules: false } ],
         'react'
       ]
     }

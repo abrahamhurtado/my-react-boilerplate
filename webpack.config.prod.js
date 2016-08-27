@@ -4,6 +4,7 @@ var autoprefixer = require('autoprefixer');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var AssetsPlugin = require('assets-webpack-plugin');
+var WebpackMD5Hash = require('webpack-md5-hash');
 
 var loaders = [
   {
@@ -13,7 +14,9 @@ var loaders = [
     babelrc: false,
     query: {
       presets: [
-        'es2015-webpack',
+        [
+          'es2015', { 'modules': false }
+        ],
         'react'
       ]
     }
@@ -27,6 +30,7 @@ var loaders = [
 ];
 
 var plugins = [
+  new WebpackMD5Hash(),
   new HtmlWebpackPlugin({
     template: './index.html'
   }),
@@ -49,8 +53,8 @@ var plugins = [
       'NODE_ENV': JSON.stringify('production')
     }
   }),
-  new ExtractTextPlugin('style.css', { allChunks: true }),
-    new AssetsPlugin({
+  new ExtractTextPlugin('[chunkhash:8]-style.css', { allChunks: true }),
+  new AssetsPlugin({
     filename: 'assets.json',
     path: resolve(__dirname, 'server'),
     prettyPrint: true,
@@ -67,7 +71,8 @@ module.exports = () => {
     },
     devtool: 'hidden-source-map',
     output: {
-      filename: '[name].js',
+      filename: '[chunkhash:8]-[name].js',
+      chunkFilename: '[chunkhash:8]-[id].bundle.js',
       path: resolve(__dirname, 'build'),
       publicPath: '/static/'
     },
