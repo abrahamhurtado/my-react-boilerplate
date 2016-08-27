@@ -6,10 +6,5 @@ import routes from '../shared/routes';
 const rootElement = document.querySelector('#react-app');
 
 match({ routes, history: browserHistory }, (err, redirect, props) => {
-  render(
-    <Router
-      history={ browserHistory }
-      routes={ routes }
-    />
-  , rootElement);
+  render(<Router { ...props } />, rootElement);
 });
